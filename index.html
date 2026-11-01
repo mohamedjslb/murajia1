@@ -32,7 +32,7 @@
 :root{--c-imp:#B7791F;--c-law:#3F7F86;--c-how:#6B8F3A;--c-dnu:#A9553F;--c-note:#7C8777}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
-body{background:var(--bg);color:var(--tx);font:400 15px/1.65 'IBM Plex Sans Arabic','Noto Naskh Arabic',system-ui,sans-serif;padding-top:env(safe-area-inset-top)}
+body{background:var(--bg);color:var(--tx);font:400 15px/1.65 var(--ff,'IBM Plex Sans Arabic'),'Noto Naskh Arabic',system-ui,sans-serif;padding-top:env(safe-area-inset-top)}
 #app{max-width:560px;margin:auto;padding:14px 16px calc(112px + env(safe-area-inset-bottom))}
 .scr{display:none}.scr.on{display:block}
 h1{font-size:25px;line-height:1.3;margin:6px 0 14px;font-weight:600}
@@ -156,6 +156,36 @@ body.dragging{user-select:none;-webkit-user-select:none}body.dragging #nav{visib
 .mono{width:42px;height:42px;border-radius:14px;flex:none;display:grid;place-items:center;font-weight:600;font-size:15px;color:var(--pri);background:color-mix(in srgb,var(--pri) 15%,transparent)}
 .pgb{height:4px;border-radius:2px;background:var(--sec);margin-top:6px;overflow:hidden}.pgb i{display:block;height:100%;background:var(--pri);border-radius:2px}
 .lr+.lr{border-top:1px solid var(--sec)}
+/* مشغّل الصوت */
+.fw.au{background:var(--card);border-radius:24px}.fw.au #pw{aspect-ratio:auto;padding:18px 16px 14px}
+.acv{width:168px;height:168px;border-radius:28px;background:var(--sec);position:relative;display:grid;place-items:center;margin:0 auto;color:var(--pri);overflow:hidden}
+.acv .ic{width:62px;height:62px;stroke-width:1.5}
+.acv::before{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--pri);opacity:.14}
+.amini{position:absolute;left:14px;bottom:14px;display:flex;gap:3px;align-items:flex-end;height:22px}
+.amini i{width:4px;height:100%;border-radius:2px;background:var(--pri);transform-origin:bottom;transform:scaleY(.2)}
+.ap.pl .amini i{animation:am .9s ease-in-out infinite}.amini i:nth-child(2){animation-delay:-.22s!important}.amini i:nth-child(3){animation-delay:-.44s!important}.amini i:nth-child(4){animation-delay:-.66s!important}
+@keyframes am{50%{transform:scaleY(1)}}
+.awv{position:relative;display:flex;align-items:center;gap:2px;height:56px;margin-top:20px;cursor:pointer;touch-action:none}
+.awv i{flex:1;min-width:2px;border-radius:2px;background:var(--sec)}.awv i.on{background:var(--pri)}
+.awv .mk2{position:absolute;top:-8px;bottom:0;width:2px;margin-left:-1px;background:var(--a);opacity:.55;pointer-events:none}
+.awv .mk2::before{content:"";position:absolute;top:-4px;left:-3px;width:8px;height:8px;border-radius:50%;background:var(--a)}
+.atm{display:flex;justify-content:space-between;font-size:12px;color:var(--mu);margin-top:6px}
+.act{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:10px}
+.apb{width:56px;height:56px;border-radius:50%;background:var(--sec);color:var(--tx);font-size:15px;font-weight:600;display:grid;place-items:center}
+.apb:active{transform:scale(.94)}
+.apb.big{width:76px;height:76px;background:var(--pri);color:var(--onpri);box-shadow:0 0 0 7px color-mix(in srgb,var(--pri) 18%,transparent)}
+.apb.big .ic{width:32px;height:32px;fill:currentColor;stroke-width:1.2}
+.ar2{display:flex;justify-content:center;margin-top:16px}
+.apsp{min-height:40px;padding:0 20px;border-radius:20px;background:var(--sec);color:var(--tx);font-weight:600;font-size:14px}
+/* أزرار اللحظات وأزرار الدرس */
+.mkg{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.mkg .btn.mk{min-height:44px;padding:0 16px;border-radius:22px;background:color-mix(in srgb,var(--t,var(--pri)) 13%,var(--card));color:var(--tx);border:1px solid color-mix(in srgb,var(--t,var(--pri)) 32%,transparent);font-weight:500}
+.mkg .btn.mk:active{transform:scale(.96)}.mkg .btn.mk .ic{color:var(--t,var(--pri))}
+.btn.pl2{min-height:42px;border-radius:21px;padding:0 16px;background:color-mix(in srgb,var(--pri) 13%,var(--card));color:var(--pri);font-weight:600}
+.fch{font-size:15px}
+.mtr{display:flex;align-items:center;gap:10px;padding:8px 0}.mtr+.mtr{border-top:1px solid var(--sec)}
+.mtr .dot{width:12px;height:12px;margin:0;flex:none}
+.mtr input{flex:1;min-height:42px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -187,7 +217,7 @@ body.dragging{user-select:none;-webkit-user-select:none}body.dragging #nav{visib
 const $=s=>document.querySelector(s),ar=n=>Number(n).toLocaleString('ar-EG'),
 esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const GCID=''; /* معرّف عميل Google للمزامنة: ضعه هنا مرة واحدة ولن يراه المستخدم */
-const gid=()=>GCID||(window.D&&D.settings&&D.settings.gcid)||'';
+const gid=()=>GCID||(typeof D!=='undefined'&&D&&D.settings&&D.settings.gcid)||'';
 const AI_ON=false; /* ميزات الذكاء الاصطناعي (Gemini) مخفية حالياً. غيّرها إلى true لإعادتها */
 const P={
 home:'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
@@ -203,6 +233,7 @@ x:'<path d="M6 6l12 12M18 6L6 18"/>',
 paste:'<rect x="6" y="5" width="12" height="16" rx="2"/><path d="M9 5V3h6v2M9 12h6M9 16h4"/>',
 play:'<path d="M8 5l11 7-11 7z"/>',
 moment:'<path d="M6 3h12v18l-6-4-6 4z"/>'};
+P.headphones='<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="13" width="5" height="8" rx="2"/><rect x="16" y="13" width="5" height="8" rx="2"/>';P.pause='<rect x="6" y="4" width="4" height="16" rx="1.5"/><rect x="14" y="4" width="4" height="16" rx="1.5"/>';
 P.mic='<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>';P.zoom='<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M8 11h6M11 8v6"/>';
 const ic=n=>'<svg class="ic" viewBox="0 0 24 24">'+P[n]+'</svg>';
 /* دائرة تقدّم بلون الثيم وحده. txt اختياري (مثل عدد بدل النسبة) */
@@ -218,15 +249,15 @@ setInterval(()=>{const e=$('#dk');if(!e)return;zi=(zi+1)%ZK.length;const n=docum
 const K='mrj_v1';let D;
 function load(){let o=null;try{o=JSON.parse(localStorage.getItem(K))}catch(e){}
  D=o&&typeof o==='object'?o:{};D.v=1;D.lessons=D.lessons||[];D.lists=D.lists||[];D.moments=D.moments||[];
- D.settings=Object.assign({theme:'auto',pal:'olive',cap:45,back:5,margin:3,pause:true,lang:'ar-SA',later:false,model:'gemini-flash-latest',gkey:'',rng:0},D.settings||{});
+ D.settings=Object.assign({theme:'auto',pal:'olive',font:'plex',mtn:{},cap:45,back:5,margin:3,pause:true,lang:'ar-SA',later:false,model:'gemini-flash-latest',gkey:'',rng:0},D.settings||{});
  D.usage=D.usage||{m:'',n:0};}
 function save(q){if(!q){D.mt=Date.now();schedPush()}try{localStorage.setItem(K,JSON.stringify(D));return true}catch(e){toast('تعذّر الحفظ: مساحة التخزين ممتلئة');return false}}
 const idbo=()=>new Promise((r,j)=>{const q=indexedDB.open('mrj',1);q.onupgradeneeded=()=>q.result.createObjectStore('f');q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)});
 async function idb(m,k,v){const d=await idbo();return new Promise((r,j)=>{const t=d.transaction('f',m==='get'?'readonly':'readwrite'),s=t.objectStore('f'),q=m==='put'?s.put(v,k):m==='get'?s.get(k):s.delete(k);t.oncomplete=()=>r(q.result);t.onerror=()=>j(t.error);t.onabort=()=>j(t.error)})}
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const S=()=>D.settings;
-function applyTheme(){const d=document.documentElement;d.dataset.theme=S().theme;d.dataset.pal=S().pal||'olive';const m=document.querySelector('meta[name=theme-color]');if(m)requestAnimationFrame(()=>{m.content=getComputedStyle(d).getPropertyValue('--bg').trim()||m.content})}
-try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(window.D&&S().theme==='auto')applyTheme()})}catch(e){}
+function applyTheme(){const d=document.documentElement;try{applyFont();applyMT()}catch(e){}d.dataset.theme=S().theme;d.dataset.pal=S().pal||'olive';const m=document.querySelector('meta[name=theme-color]');if(m)requestAnimationFrame(()=>{m.content=getComputedStyle(d).getPropertyValue('--bg').trim()||m.content})}
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(typeof D!=='undefined'&&D&&S().theme==='auto')applyTheme()})}catch(e){}
 
 /* ---------- واجهة مساعدة ---------- */
 let sTimer;
@@ -253,8 +284,15 @@ function render(n){({home:rHome,lessons:rLessons,add:rAdd,settings:rSet,lesson:r
 /* ---------- الرئيسية ---------- */
 const PDF_ON=false; /* خانة PDF مخفية مؤقتاً حتى تطويرها. غيّرها إلى true لإعادتها */
 const TYPES={yt:['yt','رابط يوتيوب','فيديو واحد'],pl:['list','قائمة تشغيل','كل دروسها دفعة واحدة'],file:['film','فيديو أو صوت','من جهازك'],pdf:['pdf','ملف PDF','من جهازك']};
+const FONTS=[['plex','IBM Plex Sans Arabic','IBM+Plex+Sans+Arabic:wght@400;500;600','بلكس (الأصلي)'],['tajawal','Tajawal','Tajawal:wght@400;500;700','تجوّل'],['cairo','Cairo','Cairo:wght@400;500;700','القاهرة'],['almarai','Almarai','Almarai:wght@400;700','المرعي'],['kufi','Noto Kufi Arabic','Noto+Kufi+Arabic:wght@400;500;600','كوفي'],['naskh','Noto Naskh Arabic','Noto+Naskh+Arabic:wght@400;500;600','نسخ'],['amiri','Amiri','Amiri:wght@400;700','أميري']];
+const FL=new Set();
+function loadFonts(ids){const q=FONTS.filter(f=>ids.includes(f[0])&&f[0]!=='plex').map(f=>'family='+f[2]).join('&');if(!q||FL.has(q))return;FL.add(q);const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?'+q+'&display=swap';document.head.append(l)}
+function applyFont(){const f=FONTS.find(x=>x[0]===S().font)||FONTS[0];loadFonts([f[0]]);document.documentElement.style.setProperty('--ff',"'"+f[1]+"'")}
 const PALS=[['olive','زيتوني','#5A7A40','#8FA66B'],['sea','بحري','#3F7F9A','#7FB4CC'],['sand','رملي','#A8703A','#D1A06A'],['berry','توتي','#A85A6B','#D68B9C'],['lav','لافندر','#6F5FA8','#A99BDB']];
 const MT={imp:['مهم','--c-imp'],law:['قانون','--c-law'],how:['طريقة حل','--c-how'],dnu:['لم أفهم','--c-dnu'],note:['ملاحظة','--c-note']};
+/* أسماء أزرار اللحظات قابلة للتعديل من الإعدادات وتنطبق على كل التطبيق */
+const MT0=Object.fromEntries(Object.entries(MT).map(([k,v])=>[k,v[0]]));
+function applyMT(){const n=(typeof D!=='undefined'&&D&&D.settings&&D.settings.mtn)||{};Object.keys(MT).forEach(k=>{MT[k][0]=n[k]||MT0[k]})}
 function rHome(){
  const last=[...D.lessons].filter(l=>l.opened).sort((a,b)=>b.opened-a.opened)[0];
  zi=(zi+1)%ZK.length;let h='<div class="hd"><div class="t"><small>ذكر</small><b id="dk">'+ZK[zi]+'</b></div><button class="ibt" data-a="settings" aria-label="الإعدادات">'+ic('set')+'</button></div>';
@@ -361,7 +399,7 @@ function autoGroup(l){const k=skey(l.title);if(!k)return null;
 
 /* ---------- شاشة الدرس (هيكل المرحلة ١) ---------- */
 let YP=null,yTick=null;
-function stopP(){clearInterval(lpT2);LP=null;recClose();fsOff();clearInterval(yTick);if(YP){try{YP.destroy()}catch(e){}YP=null;save(1)}const m=$('#mp');if(m){try{m.pause()}catch(e){}URL.revokeObjectURL(m.src);save(1)}}
+function stopP(){window.audMk=null;clearInterval(lpT2);LP=null;recClose();fsOff();clearInterval(yTick);if(YP){try{YP.destroy()}catch(e){}YP=null;save(1)}const m=$('#mp');if(m){try{m.pause()}catch(e){}URL.revokeObjectURL(m.src);save(1)}}
 function perr(m){const w=$('#pw');w&&w.insertAdjacentHTML('afterend','<p class="err">'+m+'</p>')}
 function ytLoad(l){const mk=()=>{YP=new YT.Player('yp',{videoId:l.src,width:'100%',height:'100%',playerVars:{playsinline:1,rel:0,fs:0,start:Math.floor(l.pos||0)},events:{
  onReady:()=>{const ps=takePS();if(ps!=null){try{YP.seekTo(ps,true);YP.playVideo()}catch(e){}}yTick=setInterval(()=>{try{const t=YP.getCurrentTime(),d=YP.getDuration();if(d){l.pos=t;l.dur=d;if(Math.floor(t)%5===0)save(1)}}catch(e){}},1000)},
@@ -369,23 +407,44 @@ function ytLoad(l){const mk=()=>{YP=new YT.Player('yp',{videoId:l.src,width:'100
  if(window.YT&&YT.Player)return mk();
  window.onYouTubeIframeAPIReady=mk;
  if(!document.getElementById('ytapi')){const s=document.createElement('script');s.id='ytapi';s.src='https://www.youtube.com/iframe_api';s.onerror=()=>perr('تعذّر تحميل مشغّل يوتيوب. تحقق من الإنترنت، وهذه الصفحة يجب أن تُفتح من Vercel لا من صفحة Claude.');document.head.append(s)}}
-async function fileLoad(l){try{const b=await idb('get',l.id);if(!b)throw 0;const tg=l.kind==='audio'?'audio':'video';
+/* مشغّل الصوت: غلاف وطيف وأزرار دائرية */
+function audLoad(l,b){const w=$('#pw'),N=64;let h=0;for(const c of String(l.id))h=(h*31+c.charCodeAt(0))>>>0;
+ const rnd=()=>(h=(h*1664525+1013904223)>>>0)/4294967296;let bars='';
+ for(let i=0;i<N;i++){const e=.35+.65*Math.abs(Math.sin(i*.45)),v=Math.max(.14,Math.min(1,e*(.35+rnd()*.65)));bars+='<i style="height:'+Math.round(v*100)+'%"></i>'}
+ w.innerHTML='<audio id="mp" playsinline preload="metadata" src="'+URL.createObjectURL(b)+'"></audio><div class="ap" id="ap"><div class="acv">'+ic('headphones')+'<div class="amini"><i></i><i></i><i></i><i></i></div></div>'+
+  '<div class="awv" id="awv" dir="ltr">'+bars+'</div><div class="atm" dir="ltr"><span id="at1" style="unicode-bidi:isolate">٠٠:٠٠</span><span id="at2" style="unicode-bidi:isolate">٠٠:٠٠</span></div>'+
+  '<div class="act" dir="ltr"><button class="apb" data-a="sk" data-d="-10" aria-label="رجوع عشر ثوانٍ">−١٠</button><button class="apb big" data-a="aplay" id="apl" aria-label="تشغيل أو إيقاف">'+ic('play')+'</button><button class="apb" data-a="sk" data-d="10" aria-label="تقديم عشر ثوانٍ">+١٠</button></div>'+
+  '<div class="ar2"><button class="apsp" data-a="spd">'+ar(SPD)+'×</button></div></div>';
+ const m=$('#mp'),ap=$('#ap'),wv=$('#awv'),bs=wv.querySelectorAll('i'),ps=takePS();let sg='';
+ const mk=()=>{const d=m.duration||l.dur;if(!d)return;const ms=D.moments.filter(x=>x.lesson===l.id),s=ms.map(x=>x.id+x.type).join();if(s===sg)return;sg=s;
+  wv.querySelectorAll('.mk2').forEach(e=>e.remove());ms.forEach(x=>{const e=document.createElement('span');e.className='mk2';e.style.left=Math.min(100,Math.max(0,x.pos/d*100))+'%';e.style.setProperty('--a','var('+(MT[x.type]||MT.note)[1]+')');wv.append(e)})};
+ const ui=()=>{const d=m.duration||l.dur||0,c=m.currentTime||0,f=d?c/d:0;for(let i=0;i<bs.length;i++)bs[i].className=i<f*bs.length?'on':'';
+  $('#at1').textContent=fmtT(c);$('#at2').textContent='\u200E\u2212'+fmtT(Math.max(0,d-c));mk()};
+ window.audMk=()=>{sg='';mk()};
+ m.onloadedmetadata=()=>{m.currentTime=ps!=null?ps:(l.pos||0);l.dur=m.duration;ui()};
+ m.ontimeupdate=()=>{l.pos=m.currentTime;ui()};
+ const pi=()=>{$('#apl').innerHTML=ic(m.paused?'play':'pause');ap.classList.toggle('pl',!m.paused)};
+ m.onplay=m.onpause=m.onended=pi;
+ let dg=0;const sk=e=>{const r=wv.getBoundingClientRect(),f=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),d=m.duration||l.dur;if(d){m.currentTime=f*d;ui()}};
+ wv.onpointerdown=e=>{dg=1;try{wv.setPointerCapture(e.pointerId)}catch(x){}sk(e)};wv.onpointermove=e=>{if(dg)sk(e)};wv.onpointerup=wv.onpointercancel=()=>{dg=0};
+ ui()}
+async function fileLoad(l){try{const b=await idb('get',l.id);if(!b)throw 0;if(l.kind==='audio')return audLoad(l,b);const tg='video';
  $('#pw').innerHTML='<'+tg+' id="mp" controls playsinline style="background:#000" src="'+URL.createObjectURL(b)+'"></'+tg+'>';const m=$('#mp');
  const ps=takePS();m.onloadedmetadata=()=>{m.currentTime=ps!=null?ps:(l.pos||0);l.dur=m.duration};m.ontimeupdate=()=>{l.pos=m.currentTime}}
  catch(e){const w=$('#pw');if(w){w.style.aspectRatio='';w.innerHTML='<div class="card empty"><p class="mu">الملف غير موجود على الجهاز. أضف الدرس من جديد.</p></div>'}}}
 function rLesson(){stopP();PD=null;SPD=1;const l=D.lessons.find(x=>x.id===curX);if(!l){history.replaceState({s:'home'},'');return show('home')}
  l.opened=Date.now();save(1);
- const pl=l.type==='pdf'?'<div id="pw" class="card" style="padding:0;overflow:auto;max-height:70vh"><canvas id="pc" style="width:100%;display:block"></canvas></div><div class="row" style="margin-top:8px"><button class="btn sec" data-a="pgp">'+ic('back')+'السابق</button><b class="gr" id="pn" style="text-align:center">…</b><button class="btn sec" data-a="pgn">التالي</button></div>':'<div id="fw" class="fw"><div id="pw">'+(l.type==='yt'?'<div id="yp"></div>':'')+'</div><div id="fl">'+flHtml()+'</div></div><div class="row" style="margin-top:10px;gap:8px"><div dir="ltr" class="row" style="gap:8px"><button class="btn sec" data-a="sk" data-d="-10" aria-label="رجوع عشر ثوانٍ">−١٠ث</button><button class="btn sec" data-a="sk" data-d="10" aria-label="تقديم عشر ثوانٍ">+١٠ث</button><button class="btn sec" data-a="spd">١×</button></div><button class="btn sec gr" data-a="fs">'+ic('film')+'شاشة عريضة</button></div>';
+ const pl=l.type==='pdf'?'<div id="pw" class="card" style="padding:0;overflow:auto;max-height:70vh"><canvas id="pc" style="width:100%;display:block"></canvas></div><div class="row" style="margin-top:8px"><button class="btn sec" data-a="pgp">'+ic('back')+'السابق</button><b class="gr" id="pn" style="text-align:center">…</b><button class="btn sec" data-a="pgn">التالي</button></div>':l.kind==='audio'&&l.type==='file'?'<div id="fw" class="fw au"><div id="pw"></div></div>':'<div id="fw" class="fw"><div id="pw">'+(l.type==='yt'?'<div id="yp"></div>':'')+'</div><div id="fl">'+flHtml()+'</div></div><div class="row" style="margin-top:10px;gap:8px"><div dir="ltr" class="row" style="gap:8px"><button class="btn sec pl2" data-a="sk" data-d="-10" aria-label="رجوع عشر ثوانٍ">−١٠ث</button><button class="btn sec pl2" data-a="sk" data-d="10" aria-label="تقديم عشر ثوانٍ">+١٠ث</button><button class="btn sec pl2" data-a="spd">١×</button></div><button class="btn sec pl2 gr" data-a="fs">'+ic('film')+'شاشة عريضة</button></div>';
  $('#s-lesson').innerHTML='<div class="row" style="margin-bottom:10px"><button class="ibt" data-a="back" aria-label="رجوع">'+ic('back')+'</button><h1 style="margin:0;font-size:20px" class="gr">'+esc(l.title)+'</h1></div>'+pl+
- '<div id="lpb"></div><div class="card" style="margin-top:12px">'+(l.type==='pdf'?'':'<small>مدة الحفظ قبل الضغط، أو حدّد من–إلى</small><div class="chips" id="rg" style="padding:6px 0 10px">'+rgHtml()+'</div>')+'<div class="mkg" style="margin:0">'+mkb+'</div></div>'+'<div id="ml"></div><div class="bs" style="margin-top:14px"><button class="btn sec" data-a="lopt">خيارات الدرس</button></div>';
+ '<div id="lpb"></div><div class="card" style="margin-top:12px">'+(l.type==='pdf'?'':'<small>مدة الحفظ قبل الضغط، أو حدّد من–إلى</small><div class="chips" id="rg" style="padding:6px 0 10px">'+rgHtml()+'</div>')+'<div class="mkg" style="margin:0">'+mkbH()+'</div></div>'+'<div id="ml"></div><div class="bs" style="margin-top:14px"><button class="btn sec" data-a="lopt">خيارات الدرس</button></div>';
  if(l.type==='yt')ytLoad(l);else if(l.type==='file')fileLoad(l);else pdfLoad(l);rMoments()}
 
 /* ---------- اللحظات والاستخراج والتصدير ---------- */
-const mkb=Object.keys(MT).map(k=>'<button class="btn sec mk" data-a="mark" data-t="'+k+'"><span class="dot" style="background:var('+MT[k][1]+')"></span>'+MT[k][0]+'</button>').join('')+'<button class="btn sec mk" data-a="fmic">'+ic('mic')+'صوت</button>';
+const mkbH=()=>Object.keys(MT).map(k=>'<button class="btn sec mk" data-a="mark" data-t="'+k+'" style="--t:var('+MT[k][1]+')"><span class="dot" style="background:var('+MT[k][1]+');margin:0"></span>'+MT[k][0]+'</button>').join('')+'<button class="btn sec mk" data-a="fmic" style="--t:var(--pri)">'+ic('mic')+'صوت</button>';
 const SG=['شرح','قانون','مثال','تنبيه'],busy=new Set();let MS='time',MF='all';
 function ptime(){try{if(PD&&$('#pc'))return PN;if(YP&&YP.getCurrentTime)return YP.getCurrentTime();const m=$('#mp');if(m)return m.currentTime}catch(e){}return null}
 function pseek(t){try{if(PD){PN=Math.max(1,Math.min(PD.numPages,Math.round(t)));pdfShow();return}if(YP&&YP.seekTo){YP.seekTo(Math.max(0,t),true);YP.playVideo();return}const m=$('#mp');if(m){m.currentTime=Math.max(0,t);m.play();return}}catch(e){}toast('المشغّل غير جاهز بعد')}
-function rMoments(){const l=curL(),el=$('#ml');if(!l||!el)return;const pv=m=>m.note||subText(l,m)||(m.aud?'ملاحظة صوتية مسجّلة. المس البطاقة للاستماع.':'');
+function rMoments(){try{window.audMk&&audMk()}catch(e){}const l=curL(),el=$('#ml');if(!l||!el)return;const pv=m=>m.note||subText(l,m)||(m.aud?'ملاحظة صوتية مسجّلة. المس البطاقة للاستماع.':'');
  const ms=D.moments.filter(m=>m.lesson===l.id&&(MF==='all'||m.type===MF)).sort((a,b)=>MS==='time'?a.pos-b.pos:b.t-a.t);
  el.innerHTML='<div class="row" style="margin:20px 0 10px"><b class="gr">لحظاتك ('+ar(ms.length)+')</b>'+(ms.length?'<button class="chip" data-a="msort">'+(MS==='time'?'بالوقت':'الأحدث أولاً')+'</button>':'')+'</div>'+(D.moments.some(m=>m.lesson===l.id)?'<div class="chips" style="padding:0 0 10px">'+MFH()+'</div>':'')+
  (ms.length?'<div class="stk">'+ms.map(m=>{const t=MT[m.type],b=busy.has(m.id);return '<div class="card row" data-a="mom" data-id="'+m.id+'" style="cursor:pointer"><div class="gr"><span class="tp" style="background:var('+t[1]+')">'+t[0]+'</span> <small>'+fp(m)+(b?' · جارٍ التحويل…':'')+'</small>'+(m.aud?'<span class="mu" style="margin-inline-start:6px">'+ic('mic')+'</span>':'')+(m.name?'<br><b>'+esc(m.name)+'</b>':'')+(pv(m)?'<p class="mu" style="font-size:14px;margin:6px 0 0;white-space:pre-wrap">'+esc(pv(m).slice(0,110))+'</p>':'')+'</div><button class="ibt" data-a="seek" data-id="'+m.id+'" aria-label="العودة للفيديو">'+ic('play')+'</button></div>'}).join('')+'</div>'
@@ -420,13 +479,15 @@ function expText(l){const ms=D.moments.filter(m=>m.lesson===l.id).sort((a,b)=>a.
 const curL=()=>D.lessons.find(x=>x.id===curX);
 
 /* ---------- الإعدادات ---------- */
-function rSet(){const s=S(),sel=(k,arr,n)=>'<select class="in" data-k="'+k+'"'+(n?' data-n="1"':'')+'>'+arr.map(a=>'<option value="'+a[0]+'"'+(String(s[k])===String(a[0])?' selected':'')+'>'+a[1]+'</option>').join('')+'</select>',
+function rSet(){loadFonts(FONTS.map(f=>f[0]));const s=S(),sel=(k,arr,n)=>'<select class="in" data-k="'+k+'"'+(n?' data-n="1"':'')+'>'+arr.map(a=>'<option value="'+a[0]+'"'+(String(s[k])===String(a[0])?' selected':'')+'>'+a[1]+'</option>').join('')+'</select>',
  ck=(k,t)=>'<label class="set"><span>'+t+'</span><input type="checkbox" data-k="'+k+'"'+(s[k]?' checked':'')+'></label>',
  tx=(k,t,ph)=>'<div class="set" style="display:block"><label class="mu" style="font-size:14px">'+t+'</label><input class="in l" style="margin-top:6px" data-k="'+k+'" value="'+esc(s[k])+'" placeholder="'+ph+'" autocomplete="off" spellcheck="false"></div>';
  const mon=new Date().toISOString().slice(0,7),u=D.usage.m===mon?D.usage.n:0;
  $('#s-settings').innerHTML='<div class="row" style="margin-bottom:6px"><button class="ibt" data-a="back" aria-label="رجوع">'+ic('back')+'</button><h1 style="margin:0">الإعدادات</h1></div>'+
  '<h2>المظهر</h2><div class="seg">'+[['auto','تلقائي'],['light','فاتح'],['dark','داكن']].map(t=>'<button data-a="theme" data-v="'+t[0]+'" class="'+(s.theme===t[0]?'on':'')+'">'+t[1]+'</button>').join('')+'</div>'+
  '<h2>اللون</h2><div class="pals">'+PALS.map(p=>'<button data-a="pal" data-v="'+p[0]+'" class="pal'+((s.pal||'olive')===p[0]?' on':'')+'"><i style="background:linear-gradient(90deg,'+p[2]+' 50%,'+p[3]+' 50%)"></i>'+p[1]+'</button>').join('')+'</div>'+
+ '<h2>الخط</h2><div class="pals">'+FONTS.map(f=>'<button data-a="font" data-v="'+f[0]+'" class="pal fch'+((s.font||'plex')===f[0]?' on':'')+'" style="font-family:\''+f[1]+'\',sans-serif">'+f[3]+'</button>').join('')+'</div><p class="mu" style="margin:10px 4px 0;font-size:16px">العلم نور، وبسم الله نبدأ.</p>'+
+ '<h2>أسماء الأزرار</h2><div class="card"><small class="mu">غيّر اسم أي زر من أزرار اللحظات، وسيظهر الاسم الجديد في كل التطبيق: الأزرار والقوائم والمراجعة.</small>'+Object.keys(MT).map(k=>'<div class="mtr"><span class="dot" style="background:var('+MT[k][1]+')"></span><input class="in" data-mt="'+k+'" maxlength="14" value="'+esc(MT[k][0])+'" aria-label="اسم زر '+esc(MT0[k])+'"></div>').join('')+'<div class="bs" style="margin:10px 0 0"><button class="btn sec" data-a="mtr">استعادة الأسماء الأصلية</button></div></div>'+
  '<h2>التعليم والتسجيل</h2><div class="card">'+
  '<div class="set"><span>ثواني الرجوع للاستخراج</span>'+sel('cap',[15,30,45,60,90].map(n=>[n,ar(n)]),1)+'</div>'+
  '<div class="set"><span>العودة قبل اللحظة (ثانية)</span>'+sel('back',[0,3,5,10].map(n=>[n,ar(n)]),1)+'</div>'+
@@ -450,7 +511,7 @@ const ACT={
  open:b=>{if(lp)return;go('lesson',b.dataset.id)},lmenu:b=>{if(lp)return;lmenu(b.dataset.id)},gmenu:b=>gmenu(b.dataset.id),
  chip:b=>{L.f=b.dataset.f;rLessons()},
  
- theme:b=>{S().theme=b.dataset.v;save();applyTheme();rSet()},pal:b=>{S().pal=b.dataset.v;save();applyTheme();rSet()},
+ theme:b=>{S().theme=b.dataset.v;save();applyTheme();rSet()},pal:b=>{S().pal=b.dataset.v;save();applyTheme();rSet()},font:b=>{S().font=b.dataset.v;save();applyFont();rSet()},mtr:()=>{S().mtn={};applyMT();save();rSet();toast('أُعيدت الأسماء الأصلية')},aplay:()=>{const m=$('#mp');if(m)m.paused?m.play():m.pause()},
  bk:()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({v:1,lessons:D.lessons,lists:D.lists,moments:D.moments,settings:Object.assign({},D.settings,{gkey:'',gcid:'',ykey:''})})],{type:'application/json'}));a.download='murajia-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)},
  rs:()=>$('#rs').click(),
  wipe:()=>dlg({t:'مسح كل البيانات؟',p:'ستُحذف كل الدروس واللحظات والإعدادات من هذا الجهاز، ولا يمكن التراجع.',b:[{t:'مسح كل شيء',c:'dg',f:async()=>{try{localStorage.removeItem(K)}catch(e){}try{await new Promise(r=>{const q=indexedDB.deleteDatabase('mrj');q.onsuccess=q.onerror=q.onblocked=r})}catch(e){}load();applyTheme();history.replaceState({s:'home'},'');show('home');toast('تم مسح كل البيانات')}},{t:'إلغاء'}]})
@@ -742,11 +803,12 @@ document.addEventListener('contextmenu',e=>{if(e.target.closest('[data-lp]'))e.p
 $('#q').oninput=e=>{L.q=e.target.value;rLessons()};
 $('#rs').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
  r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!Array.isArray(o.lessons))throw 0;
-  dlg({t:'استرجاع النسخة؟',p:'ستحل محل الدروس واللحظات الحالية.',b:[{t:'استرجاع',c:'',f:()=>{D.lessons=cleanA(o.lessons,cleanL);D.lists=cleanA(o.lists,cleanG);D.moments=cleanA(o.moments,cleanM);const st=o.settings||{};['theme','pal','cap','back','margin','pause','lang','later','rng','model'].forEach(k=>{if(st[k]!==undefined)D.settings[k]=st[k]});save();applyTheme();rSet();toast('تم الاسترجاع')}},{t:'إلغاء'}]})}
+  dlg({t:'استرجاع النسخة؟',p:'ستحل محل الدروس واللحظات الحالية.',b:[{t:'استرجاع',c:'',f:()=>{D.lessons=cleanA(o.lessons,cleanL);D.lists=cleanA(o.lists,cleanG);D.moments=cleanA(o.moments,cleanM);const st=o.settings||{};['theme','pal','font','mtn','cap','back','margin','pause','lang','later','rng','model'].forEach(k=>{if(st[k]!==undefined)D.settings[k]=st[k]});save();applyTheme();rSet();toast('تم الاسترجاع')}},{t:'إلغاء'}]})}
   catch(x){toast('هذا الملف ليس نسخة احتياطية من مراجع')}};r.readAsText(f);e.target.value=''};
 
+document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.mt;if(!k||!MT[k])return;const v=e.target.value.trim().slice(0,14);S().mtn=S().mtn||{};if(v&&v!==MT0[k])S().mtn[k]=v;else delete S().mtn[k];applyMT();save()});
 /* ---------- البدء ---------- */
-load();applyTheme();
+load();applyMT();applyTheme();
 document.querySelector('#nav [data-v=home]').innerHTML=ic('home')+'<span>الرئيسية</span>';
 document.querySelector('#nav [data-v=lessons]').innerHTML=ic('book')+'<span>دروسي</span>';
 history.replaceState({s:'home'},'');show('home');
