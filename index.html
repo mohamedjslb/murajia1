@@ -249,6 +249,12 @@ body{position:relative}#app{position:relative;z-index:1}
 #s-lesson .card,#s-lesson .chip{backdrop-filter:none;-webkit-backdrop-filter:none}#s-lesson .card{background:color-mix(in srgb,var(--card) 82%,transparent)}#s-lesson .chip:not(.on){background:color-mix(in srgb,var(--card) 82%,transparent)}
 button,.chip,.lr,.tile,.btn{touch-action:manipulation}
 body.fxon #nav,body.fxon #bgl,body.fxon #snack{display:none!important}
+/* تمرير سلس: التمويه الحي خلف كل بطاقة وشريحة وشريط بحث يُعاد حسابه مع كل إطار تمرير، فنلغيه ونُبقي الشفافية. التمويه يبقى للشريط السفلي والترويسة فقط */
+.card,.hero,.chip,.sb,.fw.au{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.card,.hero,.hd,.sb{box-shadow:0 4px 14px var(--sh),inset 0 1px 0 var(--hl)}
+#bgl{transform:translateZ(0);will-change:transform}
+.lr,.chips{contain:layout style}
+html{scroll-behavior:auto;-webkit-overflow-scrolling:touch}
 .awv i{transition:none}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
