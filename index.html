@@ -570,10 +570,10 @@ function pseek(t){try{if(PD){PN=Math.max(1,Math.min(PD.numPages,Math.round(t)));
 function rMoments(){try{window.audMk&&audMk()}catch(e){}const l=curL(),el=$('#ml');if(!l||!el)return;const pv=m=>m.note||subText(l,m)||(m.aud?'ملاحظة صوتية مسجّلة. المس البطاقة للاستماع.':'');
  const ms=D.moments.filter(m=>m.lesson===l.id&&(MF==='all'||m.type===MF)).sort((a,b)=>MS==='time'?a.pos-b.pos:b.t-a.t);
  el.innerHTML='<div class="row" style="margin:20px 0 10px"><b class="gr">لحظاتك ('+ar(ms.length)+')</b>'+(ms.length?'<button class="chip" data-a="msort">'+(MS==='time'?'بالوقت':'الأحدث أولاً')+'</button>':'')+'</div>'+(D.moments.some(m=>m.lesson===l.id)?'<div class="chips" style="padding:0 0 10px">'+MFH()+'</div>':'')+
- (ms.length?'<div class="stk">'+ms.map(m=>{const t=MT[m.type],b=busy.has(m.id);return '<div class="card row" data-a="mom" data-id="'+m.id+'" style="cursor:pointer"><div class="gr"><span class="tp" style="background:var('+t[1]+')">'+t[0]+'</span> <small>'+fp(m)+(b?' · جارٍ التحويل…':'')+'</small>'+(m.aud?'<span class="mu" style="margin-inline-start:6px">'+ic('mic')+'</span>':'')+(m.name?'<br><b>'+esc(m.name)+'</b>':'')+(pv(m)?'<p class="mu" style="font-size:14px;margin:6px 0 0;white-space:pre-wrap">'+esc(pv(m).slice(0,110))+'</p>':'')+'</div><button class="ibt" data-a="seek" data-id="'+m.id+'" aria-label="العودة للفيديو">'+ic('play')+'</button></div>'}).join('')+'</div>'
+ (ms.length?'<div class="stk">'+ms.map(m=>{const t=MT[m.type],b=busy.has(m.id);return '<div class="card row" data-a="mom" data-id="'+m.id+'" style="cursor:pointer"><div class="gr"><span class="tp" style="background:var('+t[1]+')">'+t[0]+'</span> <small>'+fp(m)+(b?' · جارٍ التحويل…':'')+'</small>'+(m.aud?'<span class="mu" style="margin-inline-start:6px">'+ic('mic')+'</span>':'')+(m.name?'<br><b>'+esc(m.name)+'</b>':'')+(pv(m)?'<p class="mu" style="font-size:14px;margin:6px 0 0;white-space:pre-wrap">'+esc(pv(m).slice(0,110))+'</p>':'')+'</div><button class="btn pl2 gob" data-a="seek" data-id="'+m.id+'" aria-label="الانتقال إلى هذه اللحظة">انتقال</button></div>'}).join('')+'</div>'
  :empty('moment','اضغط أحد الأزرار أثناء المشاهدة وستظهر لحظاتك هنا'))}
 function delMoment(id){dlg({t:'هل تريد حذف اللحظة؟',b:[{t:'حذف',c:'dg',f:()=>{const m=D.moments.find(x=>x.id===id);D.moments=D.moments.filter(x=>x.id!==id);save();rMoments();snack('تم حذف اللحظة',()=>{D.moments.push(m);save();rMoments()});setTimeout(()=>{if(!D.moments.some(x=>x.id===id))idb('del','a_'+id).catch(()=>{})},5400)}},{t:'إلغاء'}]})}
-function momModal(id){const m=D.moments.find(x=>x.id===id);if(!m)return;const t=MT[m.type],e=document.createElement('div'),pdf=(curL()||{}).type==='pdf';e.className='ov';
+function momModal(id,open){const m=D.moments.find(x=>x.id===id);if(!m)return;const t=MT[m.type],e=document.createElement('div'),pdf=(curL()||{}).type==='pdf';e.className='ov';
  const f0=lat(m.from!=null?m.from:m.pos),t0=lat(m.pos);let ed=0;
  const pv=m.note||'';
  e.innerHTML='<div class="dl card mdl"><div class="row"><span class="dot" style="background:var('+t[1]+');margin:0"></span><b class="gr">'+t[0]+' · '+fp(m)+'</b><button class="ibt" data-c="x" aria-label="إغلاق">'+ic('x')+'</button></div>'+
@@ -586,15 +586,16 @@ function momModal(id){const m=D.moments.find(x=>x.id===id);if(!m)return;const t=
  '<div class="grid" style="margin-top:12px">'+(AI_ON?'<button class="btn sec" data-c="e">'+(m.note?'إعادة الاستخراج':'استخراج النص')+'</button>':'')+'<button class="btn sec" data-c="m">'+ic('mic')+'ملاحظة صوتية</button><button class="btn sec" data-c="lp">تكرار اللحظة</button><button class="btn sec" data-c="d">حذف</button></div><div class="bs"><button class="btn" data-c="s">حفظ</button></div></div></div>';
  /* لا نكتب على اللحظة إلا إن فُتح التعديل فعلاً، ولا نمسّ النطاق الزمني إلا إن غُيّر حقلاه */
  const sv=()=>{if(!ed)return;m.name=e.querySelector('#mn').value.trim();m.note=e.querySelector('#mt').value.trim();const f=e.querySelector('#mf'),t2=e.querySelector('#mto');if(f&&t2&&(f.value!==f0||t2.value!==t0)){const a=ptm(f.value),z=ptm(t2.value);if(a!=null&&z!=null&&a<=z){const old=m.from!=null?m.from:m.pos;m.pos=z;if(a<z){if(Math.floor(a)!==Math.floor(old))m.rg=1;m.from=a}else{delete m.from;delete m.rg}}}save()};
+ const setEd=v=>{ed=v?1:0;const b=e.querySelector('[data-c=ed]');e.querySelector('#med').hidden=!ed;b.textContent=ed?'إخفاء':'تعديل';b.setAttribute('aria-expanded',ed?'true':'false')};
  e.onclick=async ev=>{const c=ev.target.closest('[data-c]');if(!c){if(ev.target===e){sv();e.remove();rMoments()}return}const k=c.dataset.c;
   if(k.startsWith('g:'))e.querySelector('#mn').value=k.slice(2);
-  else if(k==='ed'){ed=!ed;e.querySelector('#med').hidden=!ed;c.textContent=ed?'إخفاء':'تعديل';c.setAttribute('aria-expanded',ed?'true':'false');if(ed){const mn=e.querySelector('#mn');mn.focus({preventScroll:true});setTimeout(()=>{try{c.scrollIntoView({block:'end',behavior:'smooth'})}catch(x){}},30)}}
+  else if(k==='ed'){setEd(!ed);if(ed){e.querySelector('#mn').focus({preventScroll:true});setTimeout(()=>{try{c.scrollIntoView({block:'end',behavior:'smooth'})}catch(x){}},30)}}
   else if(k==='x'||k==='s'){sv();e.remove();rMoments()}
   else if(k==='go'){sv();e.remove();rMoments();scrollTo(0,0);playM(m)}
   else if(k==='m'){sv();e.remove();rec(id)}else if(k==='e'){sv();e.remove();extract(id)}
   else if(k==='lp'){sv();e.remove();rMoments();scrollTo(0,0);loopOn(m)}else if(k==='d'){e.remove();delMoment(id)}
   else if(k==='q'){const q=e.querySelector('#mq').value.trim(),tx=e.querySelector('#mt');if(!q||!tx.value.trim())return toast('اكتب ملاحظة وطلب التعديل أولاً');c.disabled=true;try{tx.value=await gem('هذه ملاحظة من محاضرة:\n'+tx.value+'\n\nطلب المستخدم: '+q+'\n\nأعد الملاحظة المعدّلة فقط بنفس تنسيق الأسطر ($$ للمعادلات، "- " للنقاط، "فخ: " للتحذيرات) دون معلومات من خارجها.')}catch(x){toast(gerr(x))}c.disabled=false}};
- document.body.append(e);if(m.aud)idb('get','a_'+id).then(b=>{const a=e.querySelector('#mav');if(!a)return;if(b){const u=URL.createObjectURL(b),rm=e.remove.bind(e);wvp(a,u,{seed:id});e.remove=()=>{const au=e.querySelector('audio');au&&au.pause();URL.revokeObjectURL(u);rm()}}else a.innerHTML='<p class="mu" style="margin:8px 0 0">الصوت محفوظ على الجهاز الذي سُجّل عليه فقط.</p>'}).catch(()=>{})}
+ document.body.append(e);if(open)setEd(1);if(m.aud)idb('get','a_'+id).then(b=>{const a=e.querySelector('#mav');if(!a)return;if(b){const u=URL.createObjectURL(b),rm=e.remove.bind(e);wvp(a,u,{seed:id});e.remove=()=>{const au=e.querySelector('audio');au&&au.pause();URL.revokeObjectURL(u);rm()}}else a.innerHTML='<p class="mu" style="margin:8px 0 0">الصوت محفوظ على الجهاز الذي سُجّل عليه فقط.</p>'}).catch(()=>{})}
 async function extract(id){const m=D.moments.find(x=>x.id===id),l=m&&D.lessons.find(x=>x.id===m.lesson);if(!m||busy.has(id))return;
  if(!S().gkey)return toast('يحتاج مفتاح Gemini من الإعدادات');
  busy.add(id);rMoments();const st=(m.from!=null?m.from:Math.max(0,Math.floor(m.pos-S().cap))),en=Math.floor(m.pos+S().margin);
@@ -654,7 +655,7 @@ Object.assign(ACT,{
   if(S().dir==='after'){const d=pdur();let to=cur+r,fr=cur;if(d&&to>d){to=Math.floor(d);fr=Math.max(0,Math.min(cur,to-r))}if(to<=fr)return addM(t,null,cur,0);return addM(t,fr,to,0)}
   addM(t,Math.max(0,cur-r),cur,0)},
  seek(b){const m=D.moments.find(x=>x.id===b.dataset.id);if(!m)return;scrollTo(0,0);playM(m)},
- mom(b){momModal(b.dataset.id)},msort(){MS=MS==='time'?'new':'time';rMoments()},
+ mom(b){momModal(b.dataset.id,1)},msort(){MS=MS==='time'?'new':'time';rMoments()},
  extall(){if(!S().gkey)return toast('يحتاج مفتاح Gemini من الإعدادات');const ids=D.moments.filter(m=>m.lesson===curX&&!m.note).map(m=>m.id);if(!ids.length)return toast('كل اللحظات لها ملاحظة');
   dlg({t:'استخراج '+ar(ids.length)+' لحظة؟',p:'سيُرسل طلب لكل لحظة وتُحسب على مفتاحك.',b:[{t:'ابدأ',c:'',f:async()=>{for(const i of ids)await extract(i)}},{t:'إلغاء'}]})},
  async exp(){try{await navigator.clipboard.writeText(expText(curL()));toast('تم النسخ، الصقه في دفتري')}catch(e){toast('تعذّر النسخ تلقائياً')}},
