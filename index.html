@@ -113,7 +113,7 @@ textarea.in{display:block}
 .bs{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 #snack{position:fixed;z-index:60;left:0;right:0;margin:auto;bottom:calc(88px + env(safe-area-inset-bottom));width:min(360px,calc(100% - 32px));background:var(--tx);color:var(--bg);border-radius:16px;padding:8px 8px 8px 16px;display:none;align-items:center;gap:10px}
 #snack.on{display:flex}#snack span{flex:1}
-#snack button{min-height:40px;padding:0 14px;border-radius:12px;font-weight:600;color:var(--pri);background:var(--bg)}
+#snack span{min-width:0}#snack #snx{background:var(--pri);color:var(--onpri)}#snack button{min-height:40px;padding:0 14px;border-radius:12px;font-weight:600;color:var(--pri);background:var(--bg)}
 .seg{display:flex;gap:6px;background:var(--sec);padding:4px;border-radius:16px}
 .seg button{flex:1;min-height:42px;border-radius:12px;color:var(--mu)}
 .seg button.on{background:var(--card);color:var(--tx);font-weight:600;box-shadow:0 2px 8px var(--sh)}
@@ -187,6 +187,7 @@ body.dragging{user-select:none;-webkit-user-select:none}body.dragging #nav{visib
 .wvp .awv{height:40px;margin-top:0;gap:2px}
 .wvp .atm{margin-top:4px}
 .wvp .awv::after{content:"";position:absolute;top:-2px;bottom:-2px;width:3px;margin-left:-1.5px;left:var(--x,0%);border-radius:2px;background:var(--pri);pointer-events:none}
+.gob2{display:flex;flex-direction:column;gap:6px;flex:none}.gob2 .gob{min-height:36px;padding:0 16px;font-size:14px}.btn.sec.pl2{background:color-mix(in srgb,var(--tx) 9%,transparent);color:var(--tx)}
 .mgo{width:100%;min-height:56px;font-size:15.5px;padding:0 12px;white-space:nowrap;border-radius:18px}
 .mact{display:flex;gap:10px;align-items:stretch;margin-top:14px}.mact .mgo{flex:1;width:auto}
 .mact .msm{min-height:56px;padding:0 16px;border-radius:18px;flex:none}
@@ -232,15 +233,15 @@ body{position:relative}#app{position:relative;z-index:1}
 #s-home .hd{position:sticky;top:8px;z-index:6}
 #s-lessons .sb{position:sticky;top:8px;z-index:6}
 .hero{color:var(--tx)}.hero small{color:var(--mu);opacity:1}.hero h3{color:var(--tx)}
-.hero .pl{width:48px;height:48px;border-radius:50%;background:var(--pri);color:var(--onpri);box-shadow:0 0 0 6px color-mix(in srgb,var(--pri) 18%,transparent),0 8px 26px color-mix(in srgb,var(--pri) 55%,transparent)}
+.hero .pl{width:48px;height:48px;border-radius:50%;background:var(--pri);color:var(--onpri);box-shadow:0 0 0 5px color-mix(in srgb,var(--pri) 10%,transparent),0 4px 12px color-mix(in srgb,var(--pri) 22%,transparent)}
 .chip{background:var(--gl);border:1px solid var(--gb);backdrop-filter:blur(var(--bl));-webkit-backdrop-filter:blur(var(--bl))}
 .chip.on{background:var(--pri);color:var(--onpri);border-color:var(--pri)}
 .in{background:color-mix(in srgb,var(--tx) 7%,transparent);border:1.5px solid color-mix(in srgb,var(--tx) 14%,transparent)}.in:focus{border-color:var(--pri)}
 .seg{background:color-mix(in srgb,var(--tx) 8%,transparent)}.seg button.on{background:color-mix(in srgb,var(--card) 80%,transparent)}
 .btn.sec{background:color-mix(in srgb,var(--tx) 9%,transparent)}.pal{background:color-mix(in srgb,var(--tx) 8%,transparent)}
-.btn:not(.sec):not(.dg):not(.pl2):not(.mk){box-shadow:0 8px 24px color-mix(in srgb,var(--pri) 45%,transparent)}
-.apb.big{box-shadow:0 0 0 7px color-mix(in srgb,var(--pri) 18%,transparent),0 10px 30px color-mix(in srgb,var(--pri) 55%,transparent)}
-#nav button.on{box-shadow:0 6px 20px color-mix(in srgb,var(--pri) 50%,transparent)}
+.btn:not(.sec):not(.dg):not(.pl2):not(.mk){box-shadow:0 3px 10px color-mix(in srgb,var(--pri) 20%,transparent)}
+.apb.big{box-shadow:0 0 0 6px color-mix(in srgb,var(--pri) 10%,transparent),0 4px 14px color-mix(in srgb,var(--pri) 22%,transparent)}
+#nav button.on{box-shadow:0 3px 10px color-mix(in srgb,var(--pri) 22%,transparent)}
 .tile .ib,.mono{border-radius:50%}
 .rg circle{stroke:color-mix(in srgb,var(--tx) 12%,transparent)}.pgb{background:color-mix(in srgb,var(--tx) 12%,transparent)}
 .awv i{background:color-mix(in srgb,var(--tx) 16%,transparent)}.awv i.on{background:var(--pri)}
@@ -307,7 +308,7 @@ html{scroll-behavior:auto;-webkit-overflow-scrolling:touch}
  <button data-a="tab" data-v="home"></button>
  <button data-a="tab" data-v="lessons"></button>
 </nav>
-<div id="snack"><span></span><button>تراجع</button></div>
+<div id="snack"><span></span><button>تراجع</button><button id="snx" style="display:none"></button></div>
 <input type="file" id="fi" hidden>
 <input type="file" id="pk" hidden>
 <input type="file" id="rs" accept="application/json,.json" hidden>
@@ -364,7 +365,7 @@ try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if
 /* ---------- واجهة مساعدة ---------- */
 let sTimer;
 function toast(m){inFS()?ftoast(m):snack(m)}
-function snack(m,undo){const e=$('#snack');e.querySelector('span').textContent=m;const b=e.querySelector('button');b.style.display=undo?'':'none';b.onclick=()=>{clearTimeout(sTimer);e.classList.remove('on');undo&&undo()};e.classList.add('on');clearTimeout(sTimer);sTimer=setTimeout(()=>e.classList.remove('on'),undo?5000:3200)}
+function snack(m,undo,ex){const e=$('#snack');e.querySelector('span').textContent=m;const b=e.querySelector('button'),x=$('#snx');b.style.display=undo?'':'none';b.onclick=()=>{clearTimeout(sTimer);e.classList.remove('on');undo&&undo()};x.style.display=ex?'':'none';if(ex){x.textContent=ex.t;x.onclick=()=>{clearTimeout(sTimer);e.classList.remove('on');ex.f()}}e.classList.add('on');clearTimeout(sTimer);sTimer=setTimeout(()=>e.classList.remove('on'),ex?6500:undo?5000:3200)}
 function dlg(o){const e=document.createElement('div');e.className='ov'+(o.sheet?' sheet':'');
  e.innerHTML='<div class="dl card" role="dialog">'+(o.t?'<h3>'+o.t+'</h3>':'')+(o.p?'<p class="mu">'+o.p+'</p>':'')+(o.inp!==undefined?'<input class="in" id="di" value="'+esc(o.inp)+'" placeholder="'+esc(o.ph||'')+'">':'')+'<div class="bs">'+o.b.map((b,i)=>'<button class="btn '+(b.c===undefined?'sec':b.c)+'" data-i="'+i+'">'+b.t+'</button>').join('')+'</div></div>';
  e.onclick=ev=>{const bt=ev.target.closest('[data-i]');if(bt){const v=e.querySelector('#di');const val=v?v.value:'';e.remove();const b=o.b[bt.dataset.i];b.f&&b.f(val)}else if(ev.target===e)e.remove()};
@@ -570,7 +571,7 @@ function pseek(t){try{if(PD){PN=Math.max(1,Math.min(PD.numPages,Math.round(t)));
 function rMoments(){try{window.audMk&&audMk()}catch(e){}const l=curL(),el=$('#ml');if(!l||!el)return;const pv=m=>m.note||subText(l,m)||(m.aud?'ملاحظة صوتية مسجّلة. المس البطاقة للاستماع.':'');
  const ms=D.moments.filter(m=>m.lesson===l.id&&(MF==='all'||m.type===MF)).sort((a,b)=>MS==='time'?a.pos-b.pos:b.t-a.t);
  el.innerHTML='<div class="row" style="margin:20px 0 10px"><b class="gr">لحظاتك ('+ar(ms.length)+')</b>'+(ms.length?'<button class="chip" data-a="msort">'+(MS==='time'?'بالوقت':'الأحدث أولاً')+'</button>':'')+'</div>'+(D.moments.some(m=>m.lesson===l.id)?'<div class="chips" style="padding:0 0 10px">'+MFH()+'</div>':'')+
- (ms.length?'<div class="stk">'+ms.map(m=>{const t=MT[m.type],b=busy.has(m.id);return '<div class="card row" data-a="mom" data-id="'+m.id+'" style="cursor:pointer"><div class="gr"><span class="tp" style="background:var('+t[1]+')">'+t[0]+'</span> <small>'+fp(m)+(b?' · جارٍ التحويل…':'')+'</small>'+(m.aud?'<span class="mu" style="margin-inline-start:6px">'+ic('mic')+'</span>':'')+(m.name?'<br><b>'+esc(m.name)+'</b>':'')+(pv(m)?'<p class="mu" style="font-size:14px;margin:6px 0 0;white-space:pre-wrap">'+esc(pv(m).slice(0,110))+'</p>':'')+'</div><button class="btn pl2 gob" data-a="seek" data-id="'+m.id+'" aria-label="الانتقال إلى هذه اللحظة">انتقال</button></div>'}).join('')+'</div>'
+ (ms.length?'<div class="stk">'+ms.map(m=>{const t=MT[m.type],b=busy.has(m.id);return '<div class="card row" data-a="mom" data-id="'+m.id+'" style="cursor:pointer"><div class="gr"><span class="tp" style="background:var('+t[1]+')">'+t[0]+'</span> <small>'+fp(m)+(b?' · جارٍ التحويل…':'')+'</small>'+(m.aud?'<span class="mu" style="margin-inline-start:6px">'+ic('mic')+'</span>':'')+(m.name?'<br><b>'+esc(m.name)+'</b>':'')+(pv(m)?'<p class="mu" style="font-size:14px;margin:6px 0 0;white-space:pre-wrap">'+esc(pv(m).slice(0,110))+'</p>':'')+'</div><div class="gob2"><button class="btn pl2 gob" data-a="seek" data-id="'+m.id+'" aria-label="الانتقال إلى هذه اللحظة">انتقال</button><button class="btn sec pl2 gob" data-a="mom" data-id="'+m.id+'" aria-label="تعديل اسم اللحظة وملاحظتها">تعديل</button></div></div>'}).join('')+'</div>'
  :empty('moment','اضغط أحد الأزرار أثناء المشاهدة وستظهر لحظاتك هنا'))}
 function delMoment(id){dlg({t:'هل تريد حذف اللحظة؟',b:[{t:'حذف',c:'dg',f:()=>{const m=D.moments.find(x=>x.id===id);D.moments=D.moments.filter(x=>x.id!==id);save();rMoments();snack('تم حذف اللحظة',()=>{D.moments.push(m);save();rMoments()});setTimeout(()=>{if(!D.moments.some(x=>x.id===id))idb('del','a_'+id).catch(()=>{})},5400)}},{t:'إلغاء'}]})}
 function momModal(id,open){const m=D.moments.find(x=>x.id===id);if(!m)return;const t=MT[m.type],e=document.createElement('div'),pdf=(curL()||{}).type==='pdf';e.className='ov';
@@ -724,7 +725,7 @@ function rangeTap(type,p){
  const ty=RS.type;rsClear();addM(ty,Math.floor(f),Math.floor(z),1)}
 function addM(type,from,to,rg){try{navigator.vibrate(30)}catch(e){}
  const m={id:uid(),lesson:curX,type,name:'',pos:to,t:Date.now(),note:''};if(from!=null&&from<to)m.from=from;if(rg&&m.from!=null)m.rg=1;
- D.moments.push(m);save();rMoments();T('تم حفظ اللحظة '+fp(m),()=>{D.moments=D.moments.filter(x=>x.id!==m.id);save();rMoments()});
+ D.moments.push(m);save();rMoments();const un=()=>{D.moments=D.moments.filter(x=>x.id!==m.id);save();rMoments()};if(inFS())T('تم حفظ اللحظة '+fp(m),un);else snack('تم حفظ اللحظة '+fp(m),un,{t:'إضافة اسم',f:()=>momModal(m.id,1)});
  if(AI_ON&&S().later&&S().gkey)setTimeout(()=>{if(inFS())ftoast('استخراج النص الآن؟',()=>extract(m.id),'الآن');else dlg({t:'استخراج النص',p:'الآن أم لاحقاً؟',b:[{t:'الآن',c:'',f:()=>extract(m.id)},{t:'لاحقاً'}]})},2300)}
 function pdur(){try{if(YP&&YP.getDuration)return YP.getDuration()||0;const m=$('#mp');if(m&&isFinite(m.duration))return m.duration}catch(e){}return 0}
 /* قائمة اختيار المدة المنسدلة مع قبل/بعد */
