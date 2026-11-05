@@ -301,7 +301,7 @@ html{scroll-behavior:auto;-webkit-overflow-scrolling:touch}
 
 /* ٣. استعادة الحدّ الزجاجي المضيء والتمويه للبطاقات الداخلية (.card, .hero, .hd, .sb, #nav) */
 [data-glass=full] :is(.card,.sb,.hd,.hero,#nav){border:1px solid var(--gb);box-shadow:0 6px 20px var(--sh),inset 0 1px 0 color-mix(in srgb,var(--pri) 25%,var(--hl))}
-#s-lesson.bg{display:block!important;position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
+@media screen{#s-lesson.bg{display:block;position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}}
 
 /* ٤. حقول الإدخال (.in) وشرائح الاقتراحات والمدة (.chip) داخل النوافذ */
 .in{border-radius:16px;background:color-mix(in srgb,var(--card) 62%,var(--sec));border:1.5px solid var(--gb);transition:border-color .18s,box-shadow .18s,background .18s}
@@ -726,7 +726,7 @@ const ACT={
  theme:b=>{S().theme=b.dataset.v;save();applyTheme();rSet()},pal:b=>{S().pal=b.dataset.v;save();applyTheme();rSet()},font:b=>{S().font=b.dataset.v;save();applyFont();rSet()},mtr:()=>{S().mtn={};applyMT();save();rSet();toast('أُعيدت الأسماء الأصلية')},aplay:()=>{const m=$('#mp');if(m)m.paused?m.play():m.pause()},
  bk:()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({v:1,lessons:D.lessons,lists:D.lists,moments:D.moments,settings:Object.assign({},D.settings,{gkey:'',gcid:'',ykey:''})})],{type:'application/json'}));a.download='lubab-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)},
  rs:()=>$('#rs').click(),
- wipe:()=>dlg({t:'مسح كل البيانات؟',p:'ستُحذف كل الدروس واللحظات والإعدادات من هذا الجهاز، ولا يمكن التراجع.',b:[{t:'مسح كل شيء',c:'dg',f:async()=>{try{localStorage.removeItem(K)}catch(e){}try{await new Promise(r=>{const q=indexedDB.deleteDatabase('mrj');q.onsuccess=q.onerror=q.onblocked=r})}catch(e){}load();applyTheme();hRep({s:'home'});show('home');
+ wipe:()=>dlg({t:'مسح كل البيانات؟',p:'ستُحذف كل الدروس واللحظات والإعدادات من هذا الجهاز، ولا يمكن التراجع.',b:[{t:'مسح كل شيء',c:'dg',f:async()=>{stopP();try{localStorage.removeItem(K)}catch(e){}try{await new Promise(r=>{const q=indexedDB.deleteDatabase('mrj');q.onsuccess=q.onerror=q.onblocked=r})}catch(e){}load();applyTheme();hRep({s:'home'});show('home');
 
 ACT.splash=()=>{const e=$('#sp');if(!e)return;clearTimeout(window._spT);document.body.classList.add('spon');e.classList.remove('done');const w=e.innerHTML;e.innerHTML='';void e.offsetWidth;e.innerHTML=w;window._spT=setTimeout(()=>{document.body.classList.remove('spon');e.classList.add('done')},1680)};
 toast('تم مسح كل البيانات')}},{t:'إلغاء'}]})
@@ -849,7 +849,7 @@ setInterval(()=>{const X=STP;if(!X)return;const p=ptime(),n=Date.now();
  if(p>=X.b-.08){STP=null;ppause();try{const q=$('#mp');if(q&&q.tagName!=='IFRAME'&&q.currentTime>X.b)q.currentTime=X.b}catch(x){}stopShow(X)}},60);
 Object.assign(ACT,{
  stc(){stopHide();pplay()},
- stn(){stopHide();if(inFS())fsClose();setTimeout(()=>{const e=$('#ml');e&&e.scrollIntoView({behavior:'smooth',block:'start'})},inFS()?350:30)}});
+ stn(){stopHide();if(inFS())fsClose();if(cur!=='lesson'&&curLId)go('lesson',curLId);setTimeout(()=>{const e=$('#ml');e&&e.scrollIntoView({behavior:'smooth',block:'start'})},inFS()?350:30)}});
 Object.assign(ACT,{
  sk(b){STP=null;const p=ptime();if(p==null)return toast('المشغّل غير جاهز بعد');pseek(Math.max(0,p+ +b.dataset.d))},
  lopt(){const l=curL();if(!l)return;dlg({sheet:1,t:esc(l.title),b:[{t:'ملخص الدرس (PDF)',f:()=>go('sheet',l.id)},{t:'اختبرني من ملاحظاتي',f:quiz,ai:1},{t:'لصق الترجمة',f:tsModal},{t:'استخرج الكل',f:()=>ACT.extall(),ai:1},{t:'تصدير الدرس (نسخ)',f:()=>ACT.exp()},{t:'تصدير الدرس كحزمة (.lubab)',f:pack}].concat(navigator.share?[{t:'مشاركة',f:()=>ACT.shr()}]:[]).concat([{t:'إعادة تسمية',f:()=>rename(l,l.title)},{t:'نقل إلى قائمة',f:()=>moveL(l.id)},{t:'حذف الدرس',c:'dg',f:()=>delLesson(l.id)},{t:'إغلاق'}]).filter(x=>AI_ON||!x.ai)})}});
@@ -961,7 +961,7 @@ async function gPush(){const f=await gFind(),body=gSnap();
  if(f)await gF('https://www.googleapis.com/upload/drive/v3/files/'+f.id+'?uploadType=media',{method:'PATCH',headers:{'Content-Type':'application/json'},body});
  else{const b='mrjb';await gF('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:{'Content-Type':'multipart/related; boundary='+b},body:'--'+b+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n'+JSON.stringify({name:'murajia.json',parents:['appDataFolder']})+'\r\n--'+b+'\r\nContent-Type: application/json\r\n\r\n'+body+'\r\n--'+b+'--'})}
  D.gs=D.mt||0;save(1)}
-function gApply(r){D.lessons=r.lessons||[];D.lists=r.lists||[];D.moments=r.moments||[];D.mt=r.t||0;D.gs=D.mt;save(1);render()}
+function gApply(r){D.lessons=r.lessons||[];if(curLId&&!D.lessons.some(x=>x.id===curLId))stopP();D.lists=r.lists||[];D.moments=r.moments||[];D.mt=r.t||0;D.gs=D.mt;save(1);render()}
 async function gSync(){if(gBusy)return;gBusy=true;try{gSt('جارٍ المزامنة…');const f=await gFind(),r=f?await(await gF('https://www.googleapis.com/drive/v3/files/'+f.id+'?alt=media')).json():null;if(r){r.lessons=cleanA(r.lessons,cleanL);r.lists=cleanA(r.lists,cleanG);r.moments=cleanA(r.moments,cleanM)}
   if(!r){await gPush()}
   else if(!D.gs&&(D.lessons.length||D.moments.length)&&r.t!==D.mt){gBusy=false;gSt('');
@@ -1073,7 +1073,7 @@ document.addEventListener('contextmenu',e=>{if(e.target.closest('[data-lp]'))e.p
 $('#q').oninput=e=>{L.q=e.target.value;rLessons()};
 $('#rs').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
  r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!Array.isArray(o.lessons))throw 0;
-  dlg({t:'استرجاع النسخة؟',p:'ستحل محل الدروس واللحظات الحالية.',b:[{t:'استرجاع',c:'',f:()=>{D.lessons=cleanA(o.lessons,cleanL);D.lists=cleanA(o.lists,cleanG);D.moments=cleanA(o.moments,cleanM);const st=o.settings||{};['theme','pal','lite','font','mtn','cap','back','margin','pause','lang','later','rng','dir','model'].forEach(k=>{if(st[k]!==undefined)D.settings[k]=st[k]});save();applyTheme();rSet();toast('تم الاسترجاع')}},{t:'إلغاء'}]})}
+  dlg({t:'استرجاع النسخة؟',p:'ستحل محل الدروس واللحظات الحالية.',b:[{t:'استرجاع',c:'',f:()=>{D.lessons=cleanA(o.lessons,cleanL);if(curLId&&!D.lessons.some(x=>x.id===curLId))stopP();D.lists=cleanA(o.lists,cleanG);D.moments=cleanA(o.moments,cleanM);const st=o.settings||{};['theme','pal','lite','font','mtn','cap','back','margin','pause','lang','later','rng','dir','model'].forEach(k=>{if(st[k]!==undefined)D.settings[k]=st[k]});save();applyTheme();rSet();toast('تم الاسترجاع')}},{t:'إلغاء'}]})}
   catch(x){toast('هذا الملف ليس نسخة احتياطية من لُباب')}};r.readAsText(f);e.target.value=''};
 
 document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.mt;if(!k||!MT[k])return;const v=e.target.value.trim().slice(0,14);S().mtn=S().mtn||{};if(v&&v!==MT0[k])S().mtn[k]=v;else delete S().mtn[k];applyMT();save()});
