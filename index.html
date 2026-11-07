@@ -396,9 +396,10 @@ body.spon #spVeil{opacity:1;transition:none}
 
 /* ===== المسرح السينمائي المتكامل لشاشة الدرس (#s-lesson) + شفافية الأزرار والشريط السفلي ===== */
 .l-back{background:color-mix(in srgb,var(--card) 42%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--gb);border-radius:50%}
-.c1-frame{border-radius:26px;overflow:hidden;background:color-mix(in srgb,var(--card) 38%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1.5px solid color-mix(in srgb,var(--pri) 38%,var(--gb));box-shadow:0 12px 32px color-mix(in srgb,var(--pri) 14%,var(--sh)),inset 0 1px 0 var(--hl)}
-.c1-frame .fw:not(.fs):not(.fx){border-radius:0}
-.c1-frame .vcb{margin-top:0;padding:8px 10px;border-radius:0;background:linear-gradient(180deg,color-mix(in srgb,var(--card) 22%,transparent),color-mix(in srgb,var(--card) 52%,transparent));border-top:1px solid var(--gb);box-shadow:none;gap:6px}
+.c1-frame{border-radius:26px;background:color-mix(in srgb,var(--card) 38%,transparent);border:1.5px solid color-mix(in srgb,var(--pri) 38%,var(--gb));box-shadow:0 12px 32px color-mix(in srgb,var(--pri) 14%,var(--sh)),inset 0 1px 0 var(--hl)}
+.c1-frame .fw:not(.fs):not(.fx){border-radius:24.5px 24.5px 0 0}
+body.fxon .scr.on,body.fxon .c1-frame{animation:none!important;transform:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important}
+.c1-frame .vcb{margin-top:0;padding:8px 10px;border-radius:0 0 24.5px 24.5px;background:linear-gradient(180deg,color-mix(in srgb,var(--card) 22%,transparent),color-mix(in srgb,var(--card) 52%,transparent));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--gb);box-shadow:none;gap:6px}
 .c1-frame .vb{min-height:40px;border-radius:14px;background:color-mix(in srgb,var(--card) 32%,transparent);border:1px solid var(--gb);color:var(--tx);font-size:13.5px}
 .c1-frame .vb.vw{background:color-mix(in srgb,var(--pri) 22%,transparent);border-color:color-mix(in srgb,var(--pri) 48%,transparent);color:var(--pri)}
 .c1-mom{padding:14px!important;border-radius:26px!important;background:color-mix(in srgb,var(--card) 36%,transparent)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;border:1px solid var(--gb)!important;box-shadow:0 8px 24px var(--sh),inset 0 1px 0 var(--hl)!important}
